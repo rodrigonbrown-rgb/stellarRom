@@ -68,11 +68,9 @@ cd stellarRom
 ```bash
 export VK_ZIP="$HOME/Downloads/Vendor_Kernel(Unified)-1.3.zip"
 ```
-3. Build:
+3. Build (release build, the zip lands in `out/`):
 ```bash
-source buildenv.sh beyond2lte
-./scripts/import_vendor_kernel.sh
-./scripts/make_rom.sh --force
+./build_stellar.sh RC1
 ```
 
 # Installation
