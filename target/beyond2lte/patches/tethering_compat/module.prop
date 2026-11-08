@@ -1,0 +1,4 @@
+id=tethering_compat
+name=Android 17 Tethering APEX on the 9820 kernel
+author=crew
+description=Rebuilds the Tethering APEX: NetBpfLoad 25Q4/26Q3 kernel gates bypassed, BPF ring-buffer consumers disabled.

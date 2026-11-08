@@ -1,0 +1,4 @@
+id=camera_sign
+name=SamsungCamera ROM signature
+author=crew
+description=Re-signs the rebuilt 14.1.01.17 SamsungCamera with the ROM key and adds it to the scoped signature bridge.

@@ -1,0 +1,4 @@
+id=a17_compat
+name=Android 17 legacy-vendor compatibility
+author=crew
+description=cgroup descriptors vs the proven S23 FE set, SLMK swap watermark, Codec2 resource accounting.

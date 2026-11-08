@@ -1,0 +1,4 @@
+id=screenshot_chord
+name=Power + Vol Down screenshot
+author=crew
+description=InputRune.PWM_KEY_COMBINATION_SCREENSHOT_SIDE_KEY=false: AOSP chord path (S10+ has a power key, not a side key).

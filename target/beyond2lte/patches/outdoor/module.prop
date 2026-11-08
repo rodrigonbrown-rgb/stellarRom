@@ -1,0 +1,4 @@
+id=outdoor
+name=Outdoor mode
+author=salvogiangri, ExtremeXT, crew
+description=Shows Outdoor mode in Settings > Display (bytecode patch, SecSettings stays resource-only).

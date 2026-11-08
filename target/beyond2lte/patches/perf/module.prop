@@ -1,0 +1,4 @@
+id=perf
+name=Performance props
+author=crew
+description=No persistent logcat, SystemUI + system_server compiled with speed, 9820 dex2oat threads.

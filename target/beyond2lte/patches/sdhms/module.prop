@@ -1,0 +1,4 @@
+id=sdhms
+name=SSRM warning
+author=crew, Ruchit
+description=Turns SamsungDeviceHealthManagerService's "SSRM Warning" alert into a no-op.

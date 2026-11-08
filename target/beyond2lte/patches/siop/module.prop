@@ -1,0 +1,4 @@
+id=siop
+name=S10+ SIOP policy
+author=salvogiangri, crew
+description=Plaintext Exynos 9820 SIOP policy for SDHMS (UN1CA dvfs flow), replaces the S23 FE encrypted one.

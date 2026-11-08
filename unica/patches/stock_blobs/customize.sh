@@ -1,0 +1,48 @@
+SOURCE_FIRMWARE_PATH="$FW_DIR/$(echo -n "$SOURCE_FIRMWARE" | sed 's./._.g' | rev | cut -d "_" -f2- | rev)"
+TARGET_FIRMWARE_PATH="$FW_DIR/$(echo -n "$TARGET_FIRMWARE" | sed 's./._.g' | rev | cut -d "_" -f2- | rev)"
+
+LOG_STEP_IN "- Replacing saiv blobs"
+DELETE_FROM_WORK_DIR "system" "system/saiv"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE_PATH" "system" "system/saiv" 0 0 755 "u:object_r:system_file:s0"
+LOG_STEP_OUT
+
+LOG_STEP_IN "- Replacing cameradata blobs"
+DELETE_FROM_WORK_DIR "system" "system/cameradata"
+ADD_TO_WORK_DIR "$TARGET_FIRMWARE_PATH" "system" "system/cameradata" 0 0 755 "u:object_r:system_file:s0"
+LOG_STEP_OUT
+
+if [ -f "$TARGET_FIRMWARE_PATH/system/system/usr/share/alsa/alsa.conf" ]; then
+    LOG_STEP_IN "- Replacing alsa.conf"
+    ADD_TO_WORK_DIR "$TARGET_FIRMWARE_PATH" "system" "system/usr/share/alsa/alsa.conf" 0 0 644 "u:object_r:system_file:s0"
+    LOG_STEP_OUT
+fi
+
+LOG_STEP_IN "- Replacing gamebooster props"
+SET_PROP "product" "ro.gfx.driver.0" "$(GET_PROP "$WORK_DIR/vendor/build.prop" "ro.gfx.driver.0")"
+SET_PROP "product" "ro.gfx.driver.1" "$(GET_PROP "$WORK_DIR/vendor/build.prop" "ro.gfx.driver.1")"
+LOG_STEP_OUT
+
+if [[ "$SOURCE_PRODUCT_FIRST_API_LEVEL" -gt 33 && "$TARGET_PRODUCT_FIRST_API_LEVEL" -le 33 ]]; then
+    LEGACY_SECURITY_SOURCE="r11sxxx"
+    if [[ "$TARGET_SINGLE_SYSTEM_IMAGE" == "essi85" ]]; then
+        [ -n "${MULTILIB_FIRMWARE:-}" ] || \
+            ABORT "MULTILIB_FIRMWARE is required for essi85 security compatibility blobs"
+        LEGACY_SECURITY_SOURCE="$MULTILIB_FIRMWARE"
+    fi
+
+    LOG_STEP_IN "- Downgrading VaultKeeper JNI"
+    DELETE_FROM_WORK_DIR "system" "system/lib64/vendor.samsung.hardware.security.vaultkeeper-V1-ndk.so"
+    ADD_TO_WORK_DIR "$LEGACY_SECURITY_SOURCE" "system" "system/lib64/libvkjni.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    ADD_TO_WORK_DIR "$LEGACY_SECURITY_SOURCE" "system" "system/lib64/libvkmanager.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    ADD_TO_WORK_DIR "$LEGACY_SECURITY_SOURCE" "system" "system/lib64/vendor.samsung.hardware.security.vaultkeeper@2.0.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    LOG_STEP_OUT
+
+    LOG_STEP_IN "- Downgrading ENGMODE JNI"
+    DELETE_FROM_WORK_DIR "system" "system/lib64/vendor.samsung.hardware.security.engmode-V1-ndk.so"
+    ADD_TO_WORK_DIR "$LEGACY_SECURITY_SOURCE" "system" "system/lib64/lib.engmode.samsung.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    ADD_TO_WORK_DIR "$LEGACY_SECURITY_SOURCE" "system" "system/lib64/lib.engmodejni.samsung.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    ADD_TO_WORK_DIR "$LEGACY_SECURITY_SOURCE" "system" "system/lib64/vendor.samsung.hardware.security.engmode@1.0.so" 0 0 644 "u:object_r:system_lib_file:s0"
+    LOG_STEP_OUT
+
+    unset LEGACY_SECURITY_SOURCE
+fi

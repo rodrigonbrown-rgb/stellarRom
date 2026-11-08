@@ -1,0 +1,17 @@
+logical_index	kind	item
+1	methods	Lcom/android/internal/util/crew/CrewSpoof;->apply(Landroid/content/Context;)V
+1	types	Lcom/android/internal/util/crew/CrewSpoof;
+3	methods	Lcom/android/internal/util/crew/CrewSpoof;->prop(Ljava/lang/String;)Ljava/lang/String;
+3	types	Lcom/android/internal/util/crew/CrewSpoof;
+7	classes	Lcom/android/internal/util/crew/CrewSpoof;
+7	methods	Lcom/android/internal/util/crew/CrewSpoof;-><init>()V
+7	methods	Lcom/android/internal/util/crew/CrewSpoof;->apply(Landroid/content/Context;)V
+7	methods	Lcom/android/internal/util/crew/CrewSpoof;->isTarget(Ljava/lang/String;)Z
+7	methods	Lcom/android/internal/util/crew/CrewSpoof;->prop(Ljava/lang/String;)Ljava/lang/String;
+7	methods	Lcom/android/internal/util/crew/CrewSpoof;->setField(Ljava/lang/String;Ljava/lang/String;)V
+7	methods	Ljava/lang/Class;->getDeclaredField(Ljava/lang/String;)Ljava/lang/reflect/Field;
+7	methods	Ljava/lang/reflect/Field;->set(Ljava/lang/Object;Ljava/lang/Object;)V
+7	methods	Ljava/lang/reflect/Field;->setAccessible(Z)V
+7	fields	Lcom/android/internal/util/crew/CrewSpoof;->sActive:Z
+7	types	Lcom/android/internal/util/crew/CrewSpoof;
+7	types	Ljava/lang/reflect/Field;

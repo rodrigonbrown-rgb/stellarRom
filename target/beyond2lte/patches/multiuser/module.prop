@@ -1,0 +1,4 @@
+id=multiuser
+name=Multi-user support
+author=salvogiangri, crew
+description=UN1CA "Enable multi user support": MultiUserSupportsHelper IS_TABLET=true (8 users).
