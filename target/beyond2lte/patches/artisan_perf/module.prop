@@ -1,0 +1,4 @@
+id=artisan_perf
+name=ArtisanROM perf picks
+author=crew
+description=SurfaceFlinger P010 RenderEngine crash fix (ArtisanROM 8e5c2b71) + dex2oat64 (UN1CA/Artisan 668369dd).
