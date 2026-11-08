@@ -31,3 +31,43 @@ else
     LOG "- SIOP policy name: ${CREW_SIOP_NAME:-<unset>} (src: ${CREW_SIOP_SRC##*/})"
 fi
 unset CREW_FF CREW_SIOP_ASSETS CREW_SIOP_NAME CREW_SIOP_SRC
+
+# crew-siop-remap: the active policy is the source device one; its CPU/GPU
+# limits are not 9820 steps, so SDHMS rejects the whole doc (no thermal control).
+# Floor every limiter value to the Singularity big-cluster / Mali tables.
+CREW_FF="$WORK_DIR/system/system/etc/floating_feature.xml"
+CREW_SIOP_ASSETS="$APKTOOL_DIR/system/priv-app/SamsungDeviceHealthManagerService/SamsungDeviceHealthManagerService.apk/assets"
+CREW_SIOP_NAME="$(grep -o '<SEC_FLOATING_FEATURE_SYSTEM_CONFIG_SIOP_POLICY_FILENAME>[^<]*' "$CREW_FF" 2> /dev/null | cut -d '>' -f 2)"
+if [ -f "$CREW_SIOP_ASSETS/$CREW_SIOP_NAME.xml" ]; then
+    python3 -I - "$CREW_SIOP_ASSETS/$CREW_SIOP_NAME.xml" <<'PYEOF' || LOGW "SIOP remap failed, policy left as is"
+import re, sys
+f = sys.argv[1]; s = open(f).read()
+T = {"CPUFreqMax": [3016000, 2912000, 2808000, 2730000, 2600000, 2530000, 2470000, 2340000, 2236000, 2080000, 1976000,
+                    1820000, 1664000, 1560000, 1456000, 1378000, 1248000, 1144000, 1040000, 936000, 819000, 728000, 624000, 520000],
+     "GPUFreqMax": [988000, 910000, 806000, 754000, 702000, 650000, 572000, 433000, 377000, 325000, 260000, 156000]}
+ch = {}
+def floor(tab, v):
+    if v <= 0 or v in tab: return v
+    lower = [x for x in tab if x <= v]
+    return max(lower) if lower else min(tab)
+def fix_tag(m):
+    tag = m.group(0); name = re.search(r'name="([^"]+)"', tag).group(1)
+    def fix_val(vm):
+        out = []
+        for p in re.split(r'([:,])', vm.group(2)):
+            p = p.strip()
+            if re.fullmatch(r'\d+', p):
+                n = floor(T[name], int(p))
+                if n != int(p): ch[f"{name} {p}"] = n
+                p = str(n)
+            out.append(p)
+        return vm.group(1) + ''.join(out) + '"'
+    return re.sub(r'(value=")([^"]*)"', fix_val, tag)
+s = re.sub(r'<limiter\b[^>]*name="(?:CPUFreqMax|GPUFreqMax)"[^>]*>', fix_tag, s)
+open(f, 'w').write(s)
+print("  siop remap:", ", ".join(f"{k}->{v}" for k, v in sorted(ch.items())) or "nothing to change")
+PYEOF
+else
+    LOGW "SIOP policy ${CREW_SIOP_NAME:-<unset>}.xml not in SDHMS assets, remap skipped"
+fi
+unset CREW_FF CREW_SIOP_ASSETS CREW_SIOP_NAME
