@@ -478,7 +478,7 @@ GENERATE_UPDATER_SCRIPT()
         echo    'show_progress(1, 200);'
         if $HAS_SYSTEM; then
             echo -e "\n# Patch partition system\n"
-            echo    'ui_print("Patching system image unconditionally...");'
+            echo    'ui_print("@@STEP@@System");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("system"), '
@@ -494,7 +494,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_VENDOR; then
             echo -e "\n# Patch partition vendor\n"
-            echo    'ui_print("Patching vendor image unconditionally...");'
+            echo    'ui_print("@@STEP@@Vendor");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("vendor"), '
@@ -510,7 +510,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_PRODUCT; then
             echo -e "\n# Patch partition product\n"
-            echo    'ui_print("Patching product image unconditionally...");'
+            echo    'ui_print("@@STEP@@Product");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("product"), '
@@ -526,7 +526,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_SYSTEM_EXT; then
             echo -e "\n# Patch partition system_ext\n"
-            echo    'ui_print("Patching system_ext image unconditionally...");'
+            echo    'ui_print("@@STEP@@System ext");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("system_ext"), '
@@ -542,7 +542,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_ODM; then
             echo -e "\n# Patch partition odm\n"
-            echo    'ui_print("Patching odm image unconditionally...");'
+            echo    'ui_print("@@STEP@@ODM");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("odm"), '
@@ -558,7 +558,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_VENDOR_DLKM; then
             echo -e "\n# Patch partition vendor_dlkm\n"
-            echo    'ui_print("Patching vendor_dlkm image unconditionally...");'
+            echo    'ui_print("@@STEP@@Vendor DLKM");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("vendor_dlkm"), '
@@ -574,7 +574,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_ODM_DLKM; then
             echo -e "\n# Patch partition odm_dlkm\n"
-            echo    'ui_print("Patching odm_dlkm image unconditionally...");'
+            echo    'ui_print("@@STEP@@ODM DLKM");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("odm_dlkm"), '
@@ -590,7 +590,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_SYSTEM_DLKM; then
             echo -e "\n# Patch partition system_dlkm\n"
-            echo    'ui_print("Patching system_dlkm image unconditionally...");'
+            echo    'ui_print("@@STEP@@System DLKM");'
             echo -n    'block_image_update('
             if [ "$TARGET_SUPER_PARTITION_SIZE" -ne 0 ]; then
                 echo -n    'map_partition("system_dlkm"), '
@@ -606,7 +606,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_PRISM; then
             echo -e "\n# Patch partition prism\n"
-            echo    'ui_print("Patching prism image unconditionally...");'
+            echo    'ui_print("@@STEP@@Prism");'
             echo -n    'block_image_update('
             echo -n    '"'
             echo -n    "$TARGET_BOOT_DEVICE_PATH"
@@ -618,7 +618,7 @@ GENERATE_UPDATER_SCRIPT()
         fi
         if $HAS_OPTICS; then
             echo -e "\n# Patch partition optics\n"
-            echo    'ui_print("Patching optics image unconditionally...");'
+            echo    'ui_print("@@STEP@@Optics");'
             echo -n    'block_image_update('
             echo -n    '"'
             echo -n    "$TARGET_BOOT_DEVICE_PATH"
@@ -638,38 +638,38 @@ GENERATE_UPDATER_SCRIPT()
             echo -n 'ifelse(run_program("/sbin/sh", "-c", "test -e '
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/dtb") == "0",'
-            echo    '    (ui_print("Full Patching dtb.img img...");'
+            echo    '    (ui_print("@@STEP@@DTB");'
             echo -n '     package_extract_file("dtb.img", "'
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/dtb")),'
             echo    '    ui_print("No dtb partition, skipping dtb.img"));'
         fi
         if $HAS_DTBO; then
-            echo    'ui_print("Full Patching dtbo.img img...");'
+            echo    'ui_print("@@STEP@@DTBO");'
             echo -n 'package_extract_file("dtbo.img", "'
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/dtbo");'
         fi
         if $HAS_INIT_BOOT; then
-            echo    'ui_print("Full Patching init_boot.img img...");'
+            echo    'ui_print("@@STEP@@Init boot");'
             echo -n 'package_extract_file("init_boot.img", "'
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/init_boot");'
         fi
         if $HAS_VENDOR_BOOT; then
-            echo    'ui_print("Full Patching vendor_boot.img img...");'
+            echo    'ui_print("@@STEP@@Vendor boot");'
             echo -n 'package_extract_file("vendor_boot.img", "'
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/vendor_boot");'
         fi
         if $HAS_BOOT; then
-            echo    'ui_print("Installing boot image...");'
+            echo    'ui_print("@@STEP@@Kernel");'
             echo -n 'package_extract_file("boot.img", "'
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/boot");'
         fi
         if $HAS_UP_PARAM; then
-            echo    'ui_print("Installing up_param image...");'
+            echo    'ui_print("@@STEP@@Boot logo");'
             echo -n 'package_extract_file("up_param.bin", "'
             echo -n "$TARGET_BOOT_DEVICE_PATH"
             echo    '/up_param");'
@@ -677,12 +677,12 @@ GENERATE_UPDATER_SCRIPT()
 
         if $HAS_POST_INSTALL; then
             echo -e "\n"
-            echo    'ui_print("Executing post-install tasks...");'
+            echo    'ui_print("@@STEP@@Post-install");'
             cat "$SRC_DIR/target/$TARGET_CODENAME/postinstall.edify"
         fi
 
         echo -e "\n"
-        echo    'ui_print("Cleaning up...");'
+        echo    'ui_print("@@STEP@@Cleaning up");'
         echo    'ifelse(package_extract_file("scripts/cleanup.sh", "/tmp/cleanup.sh"),'
         echo    '    (run_program("/sbin/sh", "/tmp/cleanup.sh");'
         echo    '     ui_print("Cache cleanup finished")),'
@@ -690,96 +690,66 @@ GENERATE_UPDATER_SCRIPT()
 
         echo -e "\n"
         echo    'set_progress(1);'
-        echo    'ui_print("****************************************************");'
         echo    'ui_print(" ");'
-        echo    'ui_print("            . . . . . . . . . . . . . .            ");'
-        echo    'ui_print("               Made in Czech Republic              ");'
-        echo    'ui_print("            . . . . . . . . . . . . . .            ");'
+        echo    'ui_print("  ----------------------------------------------");'
+        echo    'ui_print("    .   +    *    INSTALLATION DONE    *    +   .");'
+        echo    'ui_print("      reach for the stars  -  StellarROM V2.0");'
+        echo    'ui_print(" ");'
+        echo    'ui_print("           First boot may take 5-10 min");'
+        echo    'ui_print("           Enjoy StellarRom  -  by crew");'
+        echo    'ui_print("  ----------------------------------------------");'
+        echo    'ui_print("       +       .        *        .        +");'
         echo    'ui_print(" ");'
     } > "$SCRIPT_FILE"
+    python3 - "$SCRIPT_FILE" << 'STEPEOF'
+import re, sys
+p = sys.argv[1]; t = open(p).read()
+n = len(re.findall(r'ui_print\("@@STEP@@[^"]*"\)', t)); i = [0]
+def r(m):
+    i[0] += 1
+    return 'ui_print("  [ %d/%d ]  %s")' % (i[0], n, m.group(1))
+open(p, 'w').write(re.sub(r'ui_print\("@@STEP@@([^"]*)"\)', r, t))
+STEPEOF
 }
 
 PRINT_HEADER()
 {
-    local ONEUI_VERSION
-    local MAJOR
-    local MINOR
-    local PATCH
+    local ONEUI_VERSION MAJOR MINOR PATCH CREW_VER="V2.0" CREW_STARS
+    CREW_STARS="****************************************************"
+    ONEUI_VERSION="$(GET_PROP "system" "ro.build.version.oneui" 2>/dev/null)"
+    if [[ "$ONEUI_VERSION" =~ ^[0-9]+$ ]]; then
+        MAJOR=$((ONEUI_VERSION / 10000)); MINOR=$((ONEUI_VERSION % 10000 / 100)); PATCH=$((ONEUI_VERSION % 100))
+        if [[ "$PATCH" != "0" ]]; then ONEUI_VERSION="$MAJOR.$MINOR.$PATCH"; else ONEUI_VERSION="$MAJOR.$MINOR"; fi
+    fi
+    [ -z "$ONEUI_VERSION" ] && ONEUI_VERSION="9.0"
 
-    ONEUI_VERSION="$(GET_PROP "system" "ro.build.version.oneui")"
-    MAJOR=$(bc -l <<< "scale=0; $ONEUI_VERSION / 10000")
-    MINOR=$(bc -l <<< "scale=0; $ONEUI_VERSION % 10000 / 100")
-    PATCH=$(bc -l <<< "scale=0; $ONEUI_VERSION % 100")
-    if [[ "$PATCH" != "0" ]]; then
-        ONEUI_VERSION="$MAJOR.$MINOR.$PATCH"
-    else
-        ONEUI_VERSION="$MAJOR.$MINOR"
-    fi
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print(" ");'
-    echo    'ui_print("****************************************************");'
-    echo -n 'ui_print("'
-    if [[ -n "${TARGET_ROM_DISPLAY_ID:-}" && "$TARGET_ROM_DISPLAY_ID" != "none" ]]; then
-        echo -n "$TARGET_ROM_DISPLAY_ID $ROM_COMMIT for $TARGET_NAME"
-        echo    '");'
-        echo    'ui_print("Based on Impulse ROM by TomasULR");'
-    else
-        echo -n "Impulse ROM $ROM_VERSION for $TARGET_NAME"
-        echo    '");'
-        echo    'ui_print("Impulse ROM by TomasULR");'
-    fi
-    echo    'ui_print("Based on EternityROM by Ocin4ever @XDAforums");'
-    echo    'ui_print("Build system coded by salvo_giangri @XDAforums");'
-    echo    'ui_print("****************************************************");'
-    echo -n 'ui_print("'
-    echo -n "One UI version: $ONEUI_VERSION"
-    echo    '");'
-    echo -n 'ui_print("'
-    echo -n "Source: $SOURCE_FINGERPRINT"
-    echo    '");'
-    echo -n 'ui_print("'
-    echo -n "Target: $TARGET_FINGERPRINT"
-    echo    '");'
-    echo    'ui_print("****************************************************");'
-    echo    'ui_print("After installation, it is highly recommended to FORMAT DATA as follows:");'
-    echo    'ui_print("     Wipe -> Format Data");'
-    echo    'ui_print("Hint: FORMAT, not WIPE or FACTORY RESET!");'
-    echo    'ui_print(" ");'
-    echo    'ui_print("If you decide to not format, unexpected issues may occur and given support will be limited.");'
-    echo    'ui_print(" ");'
-    echo    'ui_print("If you wish to proceed with the installer, please press the Volume UP button.");'
-    echo    'ui_print("Otherwise, hold the Volume DOWN + POWER buttons for 7 seconds to force reboot.");'
-    echo    'assert(run_program("/sbin/sh", "-c", "while true; do getevent -lc 1 | grep -q -m1 '\''KEY_VOLUMEUP'\'' && exit 0; sleep 1; done"));'
-    echo    'ui_print("****************************************************");'
-    echo    'ui_print("Volume UP detected. Proceeding!");'
+    crew_ui() { echo "ui_print(\"$(printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g')\");"; }
+    crew_art() { local L; while IFS= read -r L; do crew_ui "$L"; done; }
+
+    crew_ui " "
+    crew_ui "$CREW_STARS"
+    crew_ui "Welcome to StellarROM $CREW_VER for ${TARGET_NAME:-Galaxy S10+} (Exynos)!"
+    crew_ui "StellarROM made with love by crew <3"
+    crew_ui "UN1CA build system coded by salvo_giangri @XDAforums"
+    crew_ui "Special thanks to EternityROM (Ocin4ever) and to all StellarROM testers"
+    crew_ui "$CREW_STARS"
+    crew_ui "One UI version: $ONEUI_VERSION"
+    crew_ui "Source: ${SOURCE_FINGERPRINT:-unknown}"
+    crew_ui "Target: ${TARGET_FINGERPRINT:-unknown}"
+    crew_ui "$CREW_STARS"
+    crew_ui "After installation, it is highly recommended to FORMAT DATA as follows:"
+    crew_ui "     Wipe -> Format Data"
+    crew_ui "Hint: FORMAT, not WIPE or FACTORY RESET!"
+    crew_ui "$CREW_STARS"
+    crew_art <<'STELLAR'
+  .      *        +        .       *       .     +
+      ______      ____         ___  ____  __  ___
+ *   / __/ /____ / / /__ _____/ _ \/ __ \/  |/  /  .
+    _\ \/ __/ -_) / / _ `/ __/ , _/ /_/ / /|_/ /   *
+ . /___/\__/\__/_/_/\_,_/_/ /_/|_|\____/_/  /_/
+   +       .     *     - V 2 . 0 -     *     .     +
+STELLAR
+    crew_ui "$CREW_STARS"
 }
 # ]
 
