@@ -1,0 +1,8 @@
+List of maintainers
+-------------------
+
+Exynos 9820
+M: crew (@rodrigonbrown-rgb)
+S: Maintained
+F: platform/exynos9820/*
+F: target/beyond2lte/*
