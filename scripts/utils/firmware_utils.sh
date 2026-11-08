@@ -119,7 +119,7 @@ GET_LATEST_FIRMWARE()
     # Builds the essi85 patch set is hash-pinned to (validate_multilib_firmware.py,
     # android16_compat, camera). FUS "latest" would hand back newer ones.
     case "$1/$2" in
-        "SM-S721B/EUX") echo "S721BXXSCDZF3/S721BOXMCDZF3/S721BXXSCDZF3"; return 0 ;;
+        "SM-S721B/EUX") echo "S721BXXUEEZIF/S721BOXMEEZIF/S721BXXUEEZIF"; return 0 ;;  # crew: One UI 9 base (8.5 pin was S721BXXSCDZF3/S721BOXMCDZF3/S721BXXSCDZF3)
         "SM-S711B/EUX") echo "S711BXXSGGZF2/S711BOXMGGZF2/S711BXXSGGZF2"; return 0 ;;
     esac
 
