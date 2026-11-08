@@ -755,6 +755,22 @@ def _firmware_system_dir(firmware_dir: Path) -> Path:
     return firmware_dir / "system"
 
 
+def _crew_core_patched(work_dir: Path) -> dict:
+    """crew: core files a module patched on purpose (target/beyond2lte/patches/
+    legacy_kernel_compat). Exempt only while the assembled file still has the
+    exact hash the module recorded."""
+    allow = {}
+    tsv = work_dir.parent / "crew_core_patched.tsv"
+    try:
+        for line in tsv.read_text().splitlines():
+            parts = line.split("\t")
+            if len(parts) == 2 and parts[0] and parts[1]:
+                allow[parts[0]] = parts[1]
+    except OSError:
+        pass
+    return allow
+
+
 def validate_source_matched_core(
     work_dir: Path, source_firmware_dir: Path
 ) -> tuple[list[str], int]:
@@ -763,6 +779,10 @@ def validate_source_matched_core(
     assembled_system = work_dir / "system/system"
     errors: list[str] = []
     for relative in SOURCE_MATCHED_CORE_FILES:
+        crew_hash = _crew_core_patched(work_dir).get(relative)
+        if crew_hash and (assembled_system / relative).is_file() and \
+                _sha256_file(assembled_system / relative) == crew_hash:
+            continue
         errors.extend(
             _compare_file(
                 source_system / relative,
@@ -874,6 +894,17 @@ def validate_d2s_standard_camera(
     if not source_camera.is_file():
         return [f"missing source Samsung camera signer reference: {source_camera}"], 0
 
+    # crew: accept the untouched source (One UI 9) camera; derive libs from it.
+    import filecmp
+    is_source = filecmp.cmp(camera, source_camera, shallow=False)
+    lib_names = D2S_STANDARD_CAMERA_NATIVE_LIBRARIES
+    if is_source:
+        with zipfile.ZipFile(camera) as _src:
+            lib_names = tuple(sorted(
+                n.rsplit("/", 1)[1] for n in _src.namelist()
+                if n.startswith("lib/arm64-v8a/") and n.endswith(".so")
+            ))
+
     try:
         with zipfile.ZipFile(camera) as archive:
             names = set(archive.namelist())
@@ -881,7 +912,7 @@ def validate_d2s_standard_camera(
                 errors.append(f"{D2S_STANDARD_CAMERA_PATH}: AndroidManifest.xml is missing")
             else:
                 manifest = archive.read("AndroidManifest.xml")
-                if (
+                if not is_source and (
                     D2S_STANDARD_CAMERA_VERSION not in manifest
                     and D2S_STANDARD_CAMERA_VERSION.decode().encode("utf-16le")
                     not in manifest
@@ -899,7 +930,7 @@ def validate_d2s_standard_camera(
 
             expected_entries = {
                 f"lib/arm64-v8a/{name}"
-                for name in D2S_STANDARD_CAMERA_NATIVE_LIBRARIES
+                for name in lib_names
             }
             archive_entries = {
                 name
@@ -920,7 +951,7 @@ def validate_d2s_standard_camera(
                 if native_dir.is_dir()
                 else set()
             )
-            expected_names = set(D2S_STANDARD_CAMERA_NATIVE_LIBRARIES)
+            expected_names = set(lib_names)
             if adjacent_names != expected_names:
                 errors.append(
                     f"{D2S_STANDARD_CAMERA_NATIVE_DIR}: adjacent native library "
@@ -928,7 +959,7 @@ def validate_d2s_standard_camera(
                     f"{sorted(expected_names - adjacent_names)}, extra="
                     f"{sorted(adjacent_names - expected_names)}"
                 )
-            for library in D2S_STANDARD_CAMERA_NATIVE_LIBRARIES:
+            for library in lib_names:
                 entry = f"lib/arm64-v8a/{library}"
                 adjacent = native_dir / library
                 if entry not in archive_entries or not adjacent.is_file():
@@ -1151,6 +1182,23 @@ def _crew_is_arm32(path: Path) -> bool:
             and int.from_bytes(header[18:20], "little") == 40)
 
 
+CREW_LIB32_ADDED = "crew_lib32_added.tsv"
+
+
+def _crew_lib32_added(work_dir: Path) -> dict:
+    """crew: 32-bit libs legacy_kernel_compat adds to /system/lib (APEX-provided on 8.5,
+    missing from A17's 64-bit-only APEXes). Accepted only while their sha256 matches."""
+    out = {}
+    try:
+        for line in (work_dir.parent / CREW_LIB32_ADDED).read_text().splitlines():
+            f = line.split("\t")
+            if len(f) == 2:
+                out[f[0]] = f[1]
+    except OSError:
+        pass
+    return out
+
+
 def validate_multilib_snapshot(work_dir: Path, firmware_dir: Path) -> list[str]:
     errors: list[str] = []
     source_system = firmware_dir / "system/system"
@@ -1164,6 +1212,11 @@ def validate_multilib_snapshot(work_dir: Path, firmware_dir: Path) -> list[str]:
         assembled_manifest = {k: v for k, v in
                               _tree_manifest(work_dir / "system/system/lib").items()
                               if k not in CREW_SPLIT_BIONIC}
+        for name, digest in _crew_lib32_added(work_dir).items():
+            lib = work_dir / "system/system/lib" / name
+            if (name not in source_manifest and name in assembled_manifest and lib.is_file()
+                    and hashlib.sha256(lib.read_bytes()).hexdigest() == digest):
+                assembled_manifest.pop(name)
         if source_manifest != assembled_manifest:
             changed = sorted(k for k in set(source_manifest) | set(assembled_manifest)
                              if source_manifest.get(k) != assembled_manifest.get(k))
