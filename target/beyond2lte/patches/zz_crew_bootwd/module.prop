@@ -1,4 +1,0 @@
-id=zz_crew_bootwd
-name=Debug boot watchdog
-author=crew
-description=Debug builds only: snapshots init/service state to /cache/crew_bootwd when boot stalls, then reboots to recovery.
