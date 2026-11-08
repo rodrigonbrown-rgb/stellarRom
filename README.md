@@ -15,11 +15,11 @@
 # What is StellarRom?
 StellarRom is a work-in-progress custom firmware that brings Samsung One UI 9 (Android 17 QPR0) to the Galaxy S10+ (SM-G975F, beyond2lte, Exynos 9820).
 
-It's based on the latest One UI 9 firmware for the Galaxy S24 FE, with extra fixes and features for the best possible experience on the S10+ out of the box.
+It's based on the latest and greatest iteration of Samsung's UX and also includes additional features, fixes and tweaks to ensure the best possible experience on the S10+ out of the box.
 
-It uses the UN1CA build system, which downloads and extracts the firmware automatically, applies the required patches and generates a flashable zip for the target device.
+It is based on the UN1CA build system, which allows automatic downloading/extraction of the firmware, applying the required patches and generating a flashable zip package for the target device.
 
-Any form of contribution, suggestion, bug report or feature request is welcome.
+Any form of contribution, suggestion, bug report or feature request for the project will be welcome.
 
 # Supported devices
 | Device | Model | Codename | SoC | Status |
@@ -27,18 +27,30 @@ Any form of contribution, suggestion, bug report or feature request is welcome.
 | Galaxy S10+ | SM-G975F | beyond2lte | Exynos 9820 | Bringup |
 
 # Features
-- Based on One UI 9 (Android 17 QPR0) Galaxy S24 FE firmware (S721BXXUEEZIF)
+- Based on the latest stable One UI 9 (Android 17 QPR0) Galaxy S24 FE firmware (S721BXXUEEZIF)
+- All software features from S24 FE
+- Full CSC support
+- Moderately Debloated
+- Heavily DeKnoxed
+- Galaxy AI support (on-device AI models included)
+- Completely upstreamed kernel (Singularity, Linux 4.14.357, KernelSU-Next)
+- One UI 9 camera with S10+ fixes
+- Multi-User support
+- AppLock support
+- EroFS partitions
+- High end animations
+- Native/live blur support
+- Bluetooth library patch included (based on [BluetoothLibraryPatcher](https://github.com/3arthur6/BluetoothLibraryPatcher))
+- [KnoxPatch](https://github.com/salvogiangri/KnoxPatch) implemented in system frameworks
 - StellarRom branding in Settings (logo and build number)
-- Singularity kernel (upstreamed 4.14, KernelSU-Next)
-- One UI 9 camera
-- Now Brief support
-- Screenshot fix
 - Lockscreen and status bar cutout fix for the S10+ dual front camera
-- Outdoor mode
-- Screen resolution changer (WQHD+ / FHD+ / HD+)
-- RAM Plus (4 GB)
-- docomo boot and shutdown animations (Galaxy S7 edge SC-02H, Galaxy S10+ SC-04L selectable)
-- More coming soon
+- Screenshot fix
+- docomo boot and shutdown animations (Galaxy S7 edge SC-02H / Galaxy S10+ SC-04L)
+- Custom boot sound
+- Extra mods (OutDoor mode, more coming soon)
+- Performance and thermal tuning for Exynos 9820
+- Countless other small optimizations
+- More that will be added in the future
 
 # Bugs
 - Face unlock is not working yet (module included but disabled)
@@ -47,11 +59,20 @@ Any form of contribution, suggestion, bug report or feature request is welcome.
 See the <a href="https://github.com/rodrigonbrown-rgb/stellarRom/issues">⚠ Issues</a> tab for more.
 
 # Building
+1. Clone the source with its submodules:
 ```bash
 git clone -b bringup/A17_qpr0_9820 --recurse-submodules https://github.com/rodrigonbrown-rgb/stellarRom.git
 cd stellarRom
+```
+2. Download the Exynos 9820 vendor package `Vendor_Kernel(Unified)-1.3.zip` (from ExtremeROM Nexus, also in this repo's [Releases](https://github.com/rodrigonbrown-rgb/stellarRom/releases)) and point `VK_ZIP` to it (default: `~/Downloads/Vendor_Kernel(Unified)-1.3.zip`):
+```bash
+export VK_ZIP="$HOME/Downloads/Vendor_Kernel(Unified)-1.3.zip"
+```
+3. Build:
+```bash
 source buildenv.sh beyond2lte
-run_cmd make_rom
+./scripts/import_vendor_kernel.sh
+./scripts/make_rom.sh --force
 ```
 
 # Installation
@@ -88,10 +109,10 @@ This project is licensed under the terms of the [GNU General Public License v3.0
 # Credits
 - **[salvogiangri](https://github.com/salvogiangri)** for the UN1CA build system and One UI patches
 - **[Ocin4Ever](https://github.com/Ocin4Ever)** for EternityROM and smali help
-- **[ExtremeXT](https://github.com/ExtremeXT)** for ExtremeROM Nexus and the Exynos 9820 vendor/kernel package
-- **[Creeeeger](https://github.com/Creeeeger)** for the One UI 9820 kernel base and facePort
+- **[ExtremeXT](https://github.com/ExtremeXT)** for ExtremeROM Nexus, ExtremeKernel (Singularity base) and the Exynos 9820 vendor/kernel package
+- **[Creeeeger](https://github.com/Creeeeger)** for facePort
 - **[ananjaser1211](https://github.com/ananjaser1211)** for samloader and One UI porting work
 - All the UN1CA project contributors and testers ❤️
 
 # Kernel source
-- Singularity (Exynos 9820), based on [Creeeeger/9820_kernel](https://github.com/Creeeeger/9820_kernel)
+- Singularity (Exynos 9820), based on ExtremeKernel by ExtremeXT: https://github.com/ExtremeXT/M62-backport
