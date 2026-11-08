@@ -1,4 +1,4 @@
-# ExtremeROM-style logo on top of Settings > About phone > Software information.
+# StellarRom logo on top of Settings > About phone > Software information.
 # SecSettings is rebuilt for resources only (stock DEX kept byte-for-byte via
 # the .code_stock marker read by scripts/apktool.sh) and added to the scoped
 # ROM-key signature bridge so it keeps its platform identity.
