@@ -1,0 +1,4 @@
+id=faceport
+name=Face unlock (S10 legacy stack)
+author=crew
+description=faced + BioFaceService from the S10 with the legacy SemBioFaceManager and a FaceManager facade, based on facePort by Creeeeger.
