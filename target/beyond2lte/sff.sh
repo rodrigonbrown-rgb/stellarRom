@@ -71,7 +71,7 @@ SEC_FLOATING_FEATURE_CAMERA_CONFIG_WINE_DETECTOR=OFF
 SEC_FLOATING_FEATURE_CAMERA_GRAW_CONFIG_MFP_PIPELINE_MODE=V1
 SEC_FLOATING_FEATURE_CAMERA_CONFIG_SDK_FEATURE_INFO=version2,super_night,preview_dis,video_hdr,smooth_zoom,logical_rear_camera:camera_id=20
 SEC_FLOATING_FEATURE_CAMERA_CONFIG_UW_DISTORTION_CORRECTION=0,119,2,18010101,4608,3456,0,0,0,0
-SEC_FLOATING_FEATURE_CAMERA_CONFIG_VENDOR_LIB_INFO=beauty.samsung.v4,human_tracking.arcsoft.v2_1,face_landmark.arcsoft.v2_1,facial_attribute.samsung.v1,smart_scan.samsung.v2,selfie_correction.samsung.v1,swuwdc.arcsoft.v1,hifills.mpi.v1,scene_detection.samsung.v1,event_detection.samsung.v2,single_bokeh.samsung.v2,dual_bokeh.samsung.v1,human_segmentation.samsung.v2,super_night.mpi.v2,mfhdr.mpi.v1,llhdr.mpi.v1,food.samsung.v1,localtm.samsung.v1_1,image_codec.samsung.v1,star_effect.samsung.v1
+SEC_FLOATING_FEATURE_CAMERA_CONFIG_VENDOR_LIB_INFO=beauty.samsung.v4,human_tracking.arcsoft.v2_1,face_landmark.arcsoft.v2_1,facial_attribute.samsung.v1,smart_scan.samsung.v2,selfie_correction.samsung.v1,swuwdc.arcsoft.v1,hifills.mpi.v1,event_detection.samsung.v2,single_bokeh.samsung.v2,dual_bokeh.samsung.v1,human_segmentation.samsung.v2,super_night.mpi.v2,mfhdr.arcsoft.v4,llhdr.arcsoft.v4,food.samsung.v1,localtm.samsung.v1_1,image_codec.samsung.v2,star_effect.samsung.v1
 SEC_FLOATING_FEATURE_CAMERA_CONFIG_WIDE_DISTORTION_CORRECTION=0,0,0,0,0,0,0,0,0,0
 SEC_FLOATING_FEATURE_CAMERA_CONFIG_MOTIONPHOTO_CAPTURE_MODE=[[3,1]]
 SEC_FLOATING_FEATURE_CAMERA_SUPPORT_30FPS_ALL_PORTRAITVIDEO=
@@ -99,8 +99,11 @@ SEC_FLOATING_FEATURE_AUDIO_CONFIG_EFFECTS_VIDEOCALL=3MIC
 SEC_FLOATING_FEATURE_AUDIO_SUPPORT_VOIP_VIA_SMART_MONITOR=
 SEC_FLOATING_FEATURE_BATTERY_SUPPORT_PASS_THROUGH=
 SEC_FLOATING_FEATURE_BIXBY_SUPPORT_LONG_KEY_SERVICE=FALSE
-SEC_FLOATING_FEATURE_SETTINGS_SUPPORT_FUNCTION_KEY_MENU=FALSE
+SEC_FLOATING_FEATURE_SETTINGS_SUPPORT_FUNCTION_KEY_MENU=TRUE
 SEC_FLOATING_FEATURE_LCD_SUPPORT_EXTRA_BRIGHTNESS=TRUE
 SEC_FLOATING_FEATURE_CAMERA_CONFIG_LOG_VIDEO=
 SEC_FLOATING_FEATURE_GRAPHICS_SUPPORT_TOUCH_FAST_RESPONSE=
 SEC_FLOATING_FEATURE_SYSTEM_SUPPORT_LOW_HEAT_MODE=
+
+# crew-thermal-off: SDHMS SIOP uses the all -1 policy (kernel TMU/IPA still active)
+SEC_FLOATING_FEATURE_SYSTEM_CONFIG_SIOP_POLICY_FILENAME=siop_default
