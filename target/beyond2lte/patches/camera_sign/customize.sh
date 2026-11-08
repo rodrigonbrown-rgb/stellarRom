@@ -21,7 +21,7 @@ mv -f "$CAM_TMP/out.apk" "$CAM"
 rm -rf "$CAM_TMP"
 
 # Already final: skip apktool's decode/rebuild of the camera.
-rm -rf "$APKTOOL_DIR/system/priv-app/SamsungCamera/SamsungCamera.apk"
+: # crew-cam9 off: rm -rf "$APKTOOL_DIR/system/priv-app/SamsungCamera/SamsungCamera.apk"
 
 python3 - "$CAM_SCAN" <<'PYEOF'
 import sys
