@@ -305,12 +305,13 @@ BUILD()
                 ;;
             /system/system/priv-app/SecSettings/SecSettings.apk)
                 if [[ "${ENABLE_SCOPED_PLATFORM_APK_REBUILDS:-false}" != "true" || \
-                        ! -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_stock" ]]; then
+                        ! -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_stock" && \
+                        ! -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_patched" ]]; then
                     LOG "- Keeping signed APK at stock: ${INPUT_FILE//$WORK_DIR/}"
                     rm -rf "$OUTPUT_PATH" "$(GET_DEX_CACHE_DIR)" "$DECODED_HASH_FILE"
                     return 0
                 fi
-                LOG "- Rebuilding signature-bridged SecSettings (resources only): ${INPUT_FILE//$WORK_DIR/}"
+                LOG "- Rebuilding signature-bridged SecSettings ($([ -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_patched" ] && echo "patched code" || echo "resources only")): ${INPUT_FILE//$WORK_DIR/}"
                 ;;
             *)
                 LOG "- Keeping signed APK at stock: ${INPUT_FILE//$WORK_DIR/}"
@@ -337,7 +338,8 @@ BUILD()
     # DEX format version might not be matching minSdkVersion, currently we handle
     # baksmali manually as apktool will by default use minSdkVersion when available
     # instead of the actual DEX format version used in the input apk
-    if [ -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_stock" ] && [ -d "$OUTPUT_PATH/smali" ]; then
+    if [ -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_stock" ] && \
+            [ ! -f "$OUTPUT_PATH/../.$(basename "$OUTPUT_PATH").code_patched" ] && [ -d "$OUTPUT_PATH/smali" ]; then
         # Resource-only rebuild: ship the original DEX byte-for-byte.
         LOG "- Keeping stock DEX in ${INPUT_FILE//$WORK_DIR/}"
         find "$OUTPUT_PATH" -mindepth 1 -maxdepth 1 -type d -name 'smali*' -exec rm -rf {} +
