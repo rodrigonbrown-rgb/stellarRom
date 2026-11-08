@@ -1,0 +1,4 @@
+id=legacy_kernel_compat
+name=Legacy kernel/vendor boot fixes (KotlinRom)
+author=crew
+description=nlmsg sepolicy strip, libui HIDL gralloc gate, init watchdog, netbpfload/netd no-hang, bring-up adb.
