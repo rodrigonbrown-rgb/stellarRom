@@ -31,7 +31,7 @@ TARGET_PRODUCT_FIRST_API_LEVEL=28
 TARGET_VNDK_VERSION=31
 TARGET_SYSTEM_AS_ROOT=true
 TARGET_SINGLE_SYSTEM_IMAGE="essi85"
-ESSI85_SOURCE="r14s"
+ESSI85_SOURCE="r12s9"
 TARGET_OS_FILE_SYSTEM="erofs"
 TARGET_SUPER_PARTITION_SIZE=0
 TARGET_SUPER_GROUP_NAME="none"
@@ -48,8 +48,8 @@ TARGET_VENDOR_KERNEL_ZIP="${VK_ZIP:-$HOME/Downloads/Vendor_Kernel(Unified)-1.3.z
 TARGET_VENDOR_KERNEL_MODEL="G975"
 
 # Settings > About phone > Software information > Build number
-TARGET_ROM_DISPLAY_ID="ExtremeRom-Revived-crew"
-# ExtremeROM logo banner in Software information (rebuilds SecSettings
+TARGET_ROM_DISPLAY_ID="StellarRomV2.0-Crew"
+# StellarRom logo banner in Software information (rebuilds SecSettings
 # resources only; its DEX stays byte-identical to stock)
 TARGET_SETTINGS_LOGO=true
 
@@ -83,4 +83,4 @@ TARGET_SUPPORT_WIFI_7=false
 # The EternityROM 14.1.01.17 SamsungCamera in platform/*/camera is an apktool
 # rebuild carrying Samsung's original META-INF, so its v1 signature is broken.
 # Re-sign it with the ROM platform key and trust that key for the camera only.
-TARGET_CAMERA_ROM_SIGNED=true
+TARGET_CAMERA_ROM_SIGNED=false
