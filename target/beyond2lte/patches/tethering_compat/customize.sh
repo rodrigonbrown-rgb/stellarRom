@@ -51,6 +51,12 @@ if [ -f "$TETH_PAYLOAD/lib64/libnetd_updatable.so" ]; then
 fi
 LOG_STEP_OUT
 
+LOG_STEP_IN "- netd.o: stats programs for the reported 5.4 kernel"
+[ -f "$TETH_PAYLOAD/etc/bpf/mainline/netd.o" ] || ABORT "Tethering payload has no etc/bpf/mainline/netd.o"
+python3 "$MODPATH/crew_netd_bpf_kver.py" "$TETH_PAYLOAD/etc/bpf/mainline/netd.o" \
+    || ABORT "netd.o: unexpected kernel ranges, netd would abort on this kernel"
+LOG_STEP_OUT
+
 LOG_STEP_IN "- Disabling BPF ring-buffer consumers in service-connectivity.jar"
 [ -f "$TETH_PAYLOAD/javalib/service-connectivity.jar" ] || ABORT "Tethering payload has no javalib/service-connectivity.jar"
 python3 "$MODPATH/crew_conn_dexpatch.py" "$TETH_PAYLOAD/javalib/service-connectivity.jar" \
