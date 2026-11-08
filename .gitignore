@@ -46,3 +46,16 @@ docs/RELEASE_WORK_20260919.md
 !.gitattributes
 !.gitignore
 !.gitmodules
+
+# StellarRom
+out/
+*.zip
+*.img
+!target/*/kernel/*.img
+*.bak
+*.orig
+*.rej
+*.pyc
+__pycache__/
+security/*.pk8
+security/*.pem
