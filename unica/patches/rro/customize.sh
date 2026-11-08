@@ -1,4 +1,5 @@
-RRO_SRC="${SOURCE_CODENAME}xxx"
+RRO_SRC="$(ls "$WORK_DIR/product/overlay" 2> /dev/null | sed -n 's/^framework-res__\(.*\)__auto_generated_rro_product\.apk$/\1/p' | head -n 1)"
+[ -n "$RRO_SRC" ] || RRO_SRC="${SOURCE_CODENAME}xxx"  # crew: read real product name (a57xnaxx), fallback r12sxxx
 if [[ -d "$SRC_DIR/target/$TARGET_CODENAME/overlay" ]]; then
     DECODE_APK "product" "overlay/framework-res__${RRO_SRC}__auto_generated_rro_product.apk"
 
