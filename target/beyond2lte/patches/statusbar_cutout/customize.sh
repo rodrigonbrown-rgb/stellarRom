@@ -14,5 +14,13 @@ else
         LOGW "Status bar cutout port failed, SystemUI keeps stock padding (see above)"
     fi
     LOG_STEP_OUT
+    # crew: lockscreen carrier text width + no marquee (right punch hole)
+    LOG_STEP_IN "- Lockscreen carrier text: full left width, ellipsis instead of marquee"
+    if python3 "$MODPATH/port_keyguard_carrier.py" "$SB_DIR" "$SB_MARK"; then
+        LOG "- Extended SystemUI DEX: $(tr '\n' ' ' < "$SB_MARK")"
+    else
+        LOGW "Lockscreen carrier text fix failed, kept stock (see above)"
+    fi
+    LOG_STEP_OUT
 fi
 unset SB_DIR SB_MARK SB_TSV
